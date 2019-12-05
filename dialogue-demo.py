@@ -8,8 +8,9 @@ import os
 import subprocess
 import sys
 
-# 悪い言葉のリストを作成する。
+# 悪い言葉リスト
 nega_wordslist = ['ゴミ', 'カス']
+# 良い言葉リスト
 posi_wordslist = ['ありがとう', '感謝']
 
 # dialogue directory
@@ -41,7 +42,7 @@ def main():
         asrresult = tmpdirname + '/asrresult.txt'
         with open(tmpdirname + '/list.txt', mode='w') as f:
             f.write(filename)
-        
+
         # 音声認識をして結果をファイルに保存
 	    # もし前の状態を保存しておきたければ別変数/別ファイルを用意する
         subprocess.call('julius -C asr/grammar.jconf -filelist ' + tmpdirname + '/list.txt 2> /dev/null | grep "^sentence1: " | sed -e "s/sentence1://" -e "s/silB//" -e "s/silE//" -e "s/ //g" > ' + asrresult, shell = True)

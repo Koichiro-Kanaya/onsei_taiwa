@@ -1,4 +1,4 @@
 *
-!./.gitignore
-!./dialogue-demo.py
-!./response.py
+!.gitignore
+!dialogue-demo.py
+!response.py

@@ -9,6 +9,7 @@ import subprocess
 import sys
 from response import response_gen
 from onsei_taiwa_lib.angry_siri import AngrySiri
+from onsei_taiwa_lib.angry_siri import MultiAngrySiri
 
 
 # 悪い言葉リストの作成
@@ -22,6 +23,9 @@ with open('./posi_word.txt') as f:
     for line in f:
         posi_wordslist.append(line.rstrip('\n'))
 
+# メンバーリスト
+member_list = ['藤村さん', '金谷さん', '鈴木さん', '陳さん']
+
 # dialogue directory
 tmpdirname = './tmp/dialogue'
 
@@ -33,7 +37,8 @@ if os.path.isdir(tmpdirname) == False:
 
 def main():
     # インスタンスの初期化
-    siri = AngrySiri()
+    # siri = AngrySiri()
+    siri = MultiAngrySiri(member_list)
 
     # 初期化メッセージを送信し、その返答を表示
     siri.init_talk() # print(siri.init_talk())
@@ -54,7 +59,7 @@ def main():
             with open(sidfile, 'r') as f:
                 sidnum = f.read().strip('\n')
 
-            print("あなたは" + sidnum + "さんですね！")
+            print("あなたは" + member_list[sidnum - 1] + "さんですね！")
 
             # 音声認識
             asrresult = tmpdirname + '/asrresult.txt'

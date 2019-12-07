@@ -41,7 +41,7 @@ def main():
     siri = MultiAngrySiri(member_list)
 
     # 初期化メッセージを送信し、その返答を表示
-    siri.init_talk() # print(siri.init_talk())
+    siri.init_talks() # print(siri.init_talk())
     
     try:
         while True:
@@ -59,7 +59,7 @@ def main():
             with open(sidfile, 'r') as f:
                 sidnum = f.read().strip('\n')
 
-            print("あなたは" + member_list[sidnum - 1] + "さんですね！")
+            print("あなたは" + member_list[int(sidnum) - 1] + "ですね！")
 
             # 音声認識
             asrresult = tmpdirname + '/asrresult.txt'
@@ -76,27 +76,27 @@ def main():
             nega_cnt = 0
             posi_cnt = 0
             with open(asrresult, 'r') as f:
-                sentence = f.read().strip('\n')
+                question = f.read().strip('\n')
                 # ユーザの言葉を表示する
-                print('あなた : ' + sentence)
+                print('あなた : ' + question)
         
 
             # 悪い言葉をカウント
             for index in range(len(nega_wordslist)):
-                if nega_wordslist[index] in sentence:
-                    nega_cnt += 1
+                for i in range(len(question) - len(nega_wordslist[index]) + 1):
+                    if nega_wordslist[index] == question[i:i+len(nega_wordslist[index])]:
+                        nega_cnt+=1
             # いい言葉をカウント
             for index in range(len(posi_wordslist)):
-                if posi_wordslist[index] in sentence:
-                    posi_cnt += 1
+                for i in range(len(question) - len(posi_wordslist[index]) + 1):
+                    if posi_wordslist[index] == question[i:i+len(posi_wordslist[index])]:
+                        posi_cnt+=1
 
             # 話者認識/音声認識結果を応答を生成する
             # 状態/履歴への依存性を持たせたければこのプログラムを適宜修正（引数変更等）
             # 話者ID を元に異なる応答リストを読み込む仕様
 
             # 認識結果
-            with open(asrresult, 'r') as f: # ユーザの発言内容
-                question = f.read()
             response_gen(siri, question, nega_cnt, posi_cnt, sidnum)
 
 

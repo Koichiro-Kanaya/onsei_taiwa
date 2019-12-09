@@ -24,7 +24,7 @@ with open('./posi_word.txt') as f:
         posi_wordslist.append(line.rstrip('\n'))
 
 # メンバーリスト
-member_list = ['藤村さん', '金谷さん', '鈴木さん', '陳さん']
+member_list = ['藤村', '金谷', '鈴木', '陳']
 
 # dialogue directory
 tmpdirname = './tmp/dialogue'
@@ -38,7 +38,7 @@ if os.path.isdir(tmpdirname) == False:
 def main():
     # インスタンスの初期化
     # siri = AngrySiri()
-    siri = MultiAngrySiri(member_list)
+    siri = MultiAngrySiri(member_list, load_pickle=False)
 
     # 初期化メッセージを送信し、その返答を表示
     siri.init_talks() # print(siri.init_talk())
@@ -59,7 +59,7 @@ def main():
             with open(sidfile, 'r') as f:
                 sidnum = f.read().strip('\n')
 
-            print("あなたは" + member_list[int(sidnum) - 1] + "ですね！")
+            print("あなたは" + member_list[int(sidnum) - 1] + "さんですね！")
 
             # 音声認識
             asrresult = tmpdirname + '/asrresult.txt'
@@ -107,6 +107,7 @@ def main():
     except KeyboardInterrupt:
         os.system('rm -r ' + tmpdirname)
         os.system('rm -r ./tmp')
+        siri.save()
         sys.exit(0)
 
 
